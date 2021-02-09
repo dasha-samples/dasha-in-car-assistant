@@ -1,0 +1,23 @@
+{
+  "formatVersion": "2",
+  "name": "auto-demo",
+  "description": "auto-demo",
+  "nlu": {
+    "skills": [
+      "common_phrases",
+      "sentiment"
+    ],
+    "customIntents": {
+      "file": "intents.json"
+    },
+    "language": "en-US"
+  },
+  "nlg": {
+    "type": "phrases",
+    "file": "phrasemap.json",
+    "signatureFile": "phrasemap.json"
+  },
+  "dialogue": {
+    "file": "main.dsl"
+  }
+}

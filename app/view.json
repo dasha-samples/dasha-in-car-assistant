@@ -1,0 +1,146 @@
+{
+  "node::preprocessorListenerController": {
+    "common.position": {
+      "x": 0,
+      "y": 23
+    }
+  },
+  "node::sentimentListenerNegative": {
+    "common.position": {
+      "x": 0,
+      "y": 169
+    }
+  },
+  "node::sentimentListenerPositive": {
+    "common.position": {
+      "x": 0,
+      "y": 315
+    }
+  },
+  "node::commandUpdater": {
+    "common.position": {
+      "x": 0,
+      "y": 461
+    }
+  },
+  "node::targetFiller": {
+    "common.position": {
+      "x": 0,
+      "y": 607
+    }
+  },
+  "node::forgetTarget": {
+    "common.position": {
+      "x": 0,
+      "y": 753
+    }
+  },
+  "node::actionFiller": {
+    "common.position": {
+      "x": 0,
+      "y": 899
+    }
+  },
+  "node::forgetAction": {
+    "common.position": {
+      "x": 0,
+      "y": 1045
+    }
+  },
+  "node::command": {
+    "common.position": {
+      "x": 0,
+      "y": 1191
+    }
+  },
+  "node::can_hear_you": {
+    "common.position": {
+      "x": 0,
+      "y": 1337
+    }
+  },
+  "node::dont_understand_hangup_params": {
+    "common.position": {
+      "x": 0,
+      "y": 1483
+    }
+  },
+  "node::dont_understand": {
+    "common.position": {
+      "x": 0,
+      "y": 1649
+    }
+  },
+  "node::dont_understand_preprocessor": {
+    "common.position": {
+      "x": 0,
+      "y": 1815
+    }
+  },
+  "node::i_am_robot": {
+    "common.position": {
+      "x": 0,
+      "y": 1961
+    }
+  },
+  "node::reactive_listening": {
+    "common.position": {
+      "x": 0,
+      "y": 2107
+    }
+  },
+  "node::repeat_preprocessor": {
+    "common.position": {
+      "x": 0,
+      "y": 2253
+    }
+  },
+  "node::repeat_hangup_params": {
+    "common.position": {
+      "x": 0,
+      "y": 2399
+    }
+  },
+  "node::repeat": {
+    "common.position": {
+      "x": 0,
+      "y": 2565
+    }
+  },
+  "node::ping": {
+    "common.position": {
+      "x": 0,
+      "y": 2751
+    }
+  },
+  "node::root": {
+    "common.position": {
+      "x": 0,
+      "y": 3000
+    }
+  },
+  "node::close": {
+    "common.position": {
+      "x": 600,
+      "y": 3073
+    }
+  },
+  "node::bye": {
+    "common.position": {
+      "x": 600,
+      "y": 2927
+    }
+  },
+  "node::dont_understand_hangup": {
+    "common.position": {
+      "x": 600,
+      "y": 1649
+    }
+  },
+  "node::repeat_or_ping_hangup": {
+    "common.position": {
+      "x": 600,
+      "y": 2658
+    }
+  }
+}

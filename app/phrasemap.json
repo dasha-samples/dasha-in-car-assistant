@@ -1,0 +1,92 @@
+{
+  "default": {
+    "voiceInfo": {
+      "lang": "en-US",
+      "speaker": "default",
+      "speed": 1.2,
+      "variation": 40
+    },
+    "phrases": {
+      "i_will_call_back": [
+        {
+          "text": "Okay, I'll call you later. Bye!",
+          "voiceInfo": { "speed": 1.2, "variation": 5 }
+        }
+      ],
+      "hello": {
+        "random": [
+          [{ "text": "Hello" }],
+          [{ "text": "Umm, hello?" }],
+          [{ "text": "Are you there?" }]
+        ]
+      },
+      "when_callback": [{ "text": "When can I call you back?" }],
+      "i_said": [{ "text": "I was saying" }],
+      "sorry_wont_call": [
+        { "text": "Sorry if I bothered you, have a nice day! Bye!" }
+      ],
+      "i_will_wait": {
+        "random": [
+          [{ "text": "Okay, I'll wait" }],
+          [{ "text": "Sure, I'll wait" }],
+          [{ "text": "Okay, no problem!" }]
+        ]
+      },
+      "i_can_hear_you": [{ "text": "Yes, I hear you" }],
+      "dont_understand": {
+        "random": [
+          [{ "text": "Sorry, could you say it again?" }],
+          [
+            {
+              "text": "Sorry, the connection dropped for a second. Could you say that again?"
+            }
+          ],
+          [{ "text": "Sorry, I didn't quite catch that." }],
+          [{ "text": "Could you say it one more time?" }]
+        ]
+      },
+      "dont_understand_hangup": [
+        {
+          "text": "I'm sorry I can barely hear you. I'll try to call you later! Bye!"
+        }
+      ],
+      "mhm": [{ "text": "Mgm..." }],
+      "yes_i_am_a_robot": [
+        {
+          "text": "Yes, I am a robot! Please do not tell anybody about this or I get fired"
+        }
+      ],
+      "is_that_all": [{ "text": "Is that all?" }],
+      "intro": [{ "text": "Ford assistant ready." }],
+      "bye": [{ "text": "Bye!" }],
+      "whatTarget": [
+        { "type": "dynamic", "id": "action" },
+        { "text": " what?" }
+      ],
+      "whatAction": [
+        { "text": "what must i do with " },
+        { "type": "dynamic", "id": "target" },
+        { "text": "?" }
+      ],
+      "asYouWish": [{ "text": "As you wish" }]
+    },
+    "types": {},
+    "macros": {
+      "hello": {},
+      "mhm": {},
+      "i_will_call_back": {},
+      "i_can_hear_you": {},
+      "dont_understand_hangup": {},
+      "dont_understand": {},
+      "yes_i_am_a_robot": {},
+      "i_said": {},
+      "i_will_wait": {},
+      "sorry_wont_call": {},
+      "intro": {},
+      "bye": {},
+      "whatAction": {},
+      "whatTarget": {},
+      "asYouWish": {}
+    }
+  }
+}
