@@ -64,7 +64,7 @@
         { "text": " what?" }
       ],
       "whatAction": [
-        { "text": "what must i do with " },
+        { "text": "What should i do with " },
         { "type": "dynamic", "id": "target" },
         { "text": "?" }
       ],

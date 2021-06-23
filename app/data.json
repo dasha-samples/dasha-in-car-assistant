@@ -1,0 +1,63 @@
+{
+  "version": "v2",
+  "intents": {
+    "open": {
+      "includes": [
+        "open",
+        "open the (trunk)[car_part]",
+        "open (trunk)[car_part]",
+        "(trunk)[car_part] open"
+      ]
+    },
+    "close": {
+      "includes": [
+        "close",
+        "close the (trunk)[car_part]",
+        "close (trunk)[car_part]",
+        "(trunk)[car_part] close"
+      ]
+    },
+    "turn on": {
+      "includes": [
+        "turn on",
+        "enable",
+        "turn on the (headlights)[car_function]",
+        "turn on (light)[car_function]",
+        "turn (light)[car_function] on",
+        "turn the (light)[car_function] on",
+        "enable the (light)[car_function]",
+        "enable (light)[car_function]",
+        "(light)[car_function] on"
+      ]
+    },
+    "turn off": {
+      "includes": [
+        "turn off",
+        "disable",
+        "disable the (light)[car_function]",
+        "disable (light)[car_function]",
+        "turn off the (light)[car_function]",
+        "turn off (light)[car_function]",
+        "turn (light)[car_function] off"
+      ]
+    }
+  },
+  "entities": {
+    "car_part": {
+      "open_set": false,
+      "values": [
+        { "value": "trunk", "synonyms": ["boot", "luggage", "luggage boot"] },
+        { "value": "window", "synonyms": ["windows"]}
+      ]
+    },
+    "car_function": {
+      "open_set": false,
+      "values": [
+        { "value": "light", "synonyms": ["lights", "headlights"] },
+        { "value": "conditioner", "synonyms": ["cold", "air conditioner"] },
+        { "value": "snow mode" }
+      ],
+      "excludes": ["flight", "flights"]
+    }
+  }
+}

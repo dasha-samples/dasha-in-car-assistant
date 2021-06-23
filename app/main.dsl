@@ -3,8 +3,8 @@ import "./commonDialogue.dsl";
 context
 {
     input phone: string,
-    currentTarget: string = "",
-    currentAction: string = "",
+    currentTarget: string? = null,
+    currentAction: string? = null,
     newInfo: boolean = false;
     forgetTime: number = 15000;
     yesNoEnabled: boolean = false;
@@ -24,50 +24,46 @@ type CallResult =
 ;
 
 //Callbacks
-external function command(target: string, action: string): CallResult;
+external function command(target: string?, action: string?): CallResult;
 external function checkCommandUpdate(): CallResultExtended;
-
-
-preprocessor digression light
-{
-    conditions { on #messageHasIntent("light") priority 2000; }
-    do
-    {
-        set $newInfo = true;
-        set $currentTarget = "light";  
-        return;
-    }
-}
 
 preprocessor digression targetFiller
 {
     conditions
     {
-        on #messageHasIntent("conditioner") || #messageHasIntent("trunk") || #messageHasIntent("snow mode") priority 2000;
+        on #messageHasData("car_function") or #messageHasData("car_part") priority 2000;
     }
     do
     {
         set $newInfo = true;
-        if (#messageHasIntent("conditioner")) set $currentTarget = "conditioner";
-        if (#messageHasIntent("trunk")) set $currentTarget = "trunk";
-        if (#messageHasIntent("snow mode")) set $currentTarget = "snow mode";    
+        if (#messageHasData("car_function")){
+            set $currentTarget = #messageGetData("car_function")[0]?.value;
+            return;  
+        }
+        if (#messageHasData("car_part")){
+            set $currentTarget = #messageGetData("car_part")[0]?.value;
+            return;  
+        }
         return;
     }
 }
 
 preprocessor digression actionFiller
-{
+{   
     conditions
     {
-        on #messageHasIntent("turn on") || #messageHasIntent("turn off") || #messageHasIntent("open") || #messageHasIntent("close") priority 2000;
+        on #messageHasAnyIntent(digression.actionFiller.commands) priority 2000;
     }
+    var commands: string[] = ["turn on", "turn off", "open", "close"];
     do
     {
         set $newInfo = true;
-        if (#messageHasIntent("turn on")) set $currentAction = "turn on";
-        if (#messageHasIntent("turn off")) set $currentAction = "turn off";
-        if (#messageHasIntent("open")) set $currentAction = "open";
-        if (#messageHasIntent("close")) set $currentAction = "close";
+        for (var command in digression.actionFiller.commands){
+            if (#messageHasIntent(command)) {
+                set $currentAction = command;
+                return;
+            }
+        }
         return;
     }
 }
@@ -77,8 +73,9 @@ digression yesOrNo
     conditions { on $yesNoEnabled; }
     do
     {
-        if(#messageHasSentiment("positive"))
-        {
+        if(#messageHasSentiment("positive") or #messageHasIntent($currentAction??""))
+        {   
+            if ($currentTarget is null or $currentTarget is null) {return; }
             var result = external command( $currentTarget, $currentAction);
             #sayText(result.details);          
         }
@@ -91,9 +88,11 @@ digression yesOrNo
             set $yesNoEnabled = false;
             return;
         }
-
-        set $newInfo = false;
+        set $lastIdleTime = #getIdleTime();
+        set $currentTarget = null;
+        set $currentAction = null;
         set $yesNoEnabled = false;
+        set $newInfo = false;
         return;
     }
 }
@@ -129,8 +128,8 @@ preprocessor digression forgetTarget
     do
     {
         set $lastIdleTime = #getIdleTime();
-        set $currentTarget = "";
-        set $currentAction = "";
+        set $currentTarget = null;
+        set $currentAction = null;
         set $yesNoEnabled = false;
         return;
     }
@@ -145,28 +144,19 @@ digression command
     do
     {
         set $newInfo = false;
-        if ($currentAction == "")
+        if ($currentAction is null)
         {
-            #say("whatAction",
-            {
-                target: $currentTarget
-            }
-            );
+            #say("whatAction", { target: $currentTarget });
             return;
         }
-        if ($currentTarget == "")
+        if ($currentTarget is null)
         {
-            #say("whatTarget",
-            {
-                action: $currentAction
-            }
-            );
+            #say("whatTarget", { action: $currentAction });
             return;
         }
         var result = external command( $currentTarget, $currentAction);
         #sayText(result.details);
         set $lastIdleTime = #getIdleTime();
-
         return;
     }
 }

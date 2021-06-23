@@ -1,10 +1,12 @@
 const dasha = require("@dasha.ai/sdk");
+const fs = require("fs");
 
 const currentState = {
   light: { "turn on": true, "turn off": false },
   conditioner: { "turn on": true, "turn off": false },
-  trunk: { open: true, close: false },
   "snow mode": { "turn on": true, "turn off": false },
+  trunk: { open: true, close: false },
+  window: { open: true, close: false },
 };
 
 const antonyms = {
@@ -31,9 +33,12 @@ async function command({ target, action }) {
     case true:
       currentState[target][action] = false;
       currentState[target][antonyms[action]] = true;
-      // i do not think the answer is understandable now. it was better, i think.
       return { success: true, details: command };
     case false:
+      return {
+        success: false,
+        details: `${target} already ${action}`,
+      };
     case undefined:
       return { success: false, details: `Cannot ${command}` };
     default:
@@ -72,6 +77,17 @@ async function main() {
   await app.start();
 
   const conv = app.createConversation({ phone: process.argv[2] ?? "chat" });
+
+  const logFile = await fs.promises.open("./log.txt", "w");
+  await logFile.appendFile("#".repeat(100) + "\n");
+
+  conv.on("transcription", async (entry) => {
+    await logFile.appendFile(`${entry.speaker}: ${entry.text}\n`);
+  });
+
+  conv.on("debugLog", async (event) => {
+    await logFile.appendFile(JSON.stringify(event, undefined, 2) + "\n");
+  });
 
   if (conv.input.phone !== "chat") conv.on("transcription", console.log);
 
