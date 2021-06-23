@@ -8,7 +8,7 @@
       "sentiment"
     ],
     "customIntents": {
-      "file": "intents.json"
+      "file": "data.json"
     },
     "language": "en-US"
   },
