@@ -11,7 +11,7 @@ You can follow the tutorial below to recreate this application.
 
 Open the repo in VS Code. 
 
-Go to __main.dsl__
+Go to __main.dsl__.
 
 In the first few lines, the context variables and types are declared.
 
@@ -65,7 +65,7 @@ preprocessor digression targetFiller
 }
 ```
 
-In the __’preprocessor digression targetFiller’__ part we program a conversational AI app to understand what car part the driver chooses. A __digression__ is a node which can be called up from any point in the conversation. This is how the AI responds to inevitable tangents that humans bring up in conversation. You can also use digressions to specify numerous responses to a phrase such as "how can I help you today?" A preprocessor is a digression which doesn't consume a message, it performs some function but goes unseen by the end user. You can read more about digressions in this [post](https://dasha.ai/en-us/blog/using-digressions).  You can read more about Dasha preprocessor digressions in our [documentation](https://docs.dasha.ai/en-us/default/dasha-script-language/program-structure?searchResult=p73-highlight-0#digression). 
+In the __`preprocessor digression targetFiller`__ we program a conversational AI app to understand what car part the driver chooses. A __digression__ is a node which can be called up from any point in the conversation. This is how the AI responds to inevitable tangents that humans bring up in conversation. You can also use digressions to specify numerous responses to a phrase such as "how can I help you today?" A __preprocessor__ is a digression which doesn't consume a message, it performs some function but goes unseen by the end user. You can read more about digressions in this [post](https://dasha.ai/en-us/blog/using-digressions).  You can read more about Dasha preprocessor digressions in our [documentation](https://docs.dasha.ai/en-us/default/dasha-script-language/program-structure?searchResult=p73-highlight-0#digression). 
 
 At this point the driver can specify either the wanted car part or what they want to be done with that part, which is shown in line 33:
 
@@ -90,7 +90,7 @@ Speaking of actions and car parts, you can check them out under intents and enti
     },
 ```
 
-In the context of Dasha, an entity is a word or a phrase the value of which is extracted and categorized from the user's words. Here we have __'“trunk”'__ and __'“window”'__, which are parts of the car. In order to make your in car voice assistant understand that the driver wants to open the trunk when receiving the __'“open boot”'__ command, it’s necessary to add synonyms when writing down the entities. You can learn more about named entities [here](https://dasha.ai/en-us/blog/named-entity-recognition).
+In the context of Dasha, an entity is a word or a phrase the value of which is extracted and categorized from the user's words. Here we have __`“trunk”`__ and __`“window”`__, which are parts of the car. In order to make your in car voice assistant understand that the driver wants to open the trunk when receiving the __`“open boot”`__ command, it’s necessary to add synonyms when writing down the entities. You can learn more about named entities [here](https://dasha.ai/en-us/blog/named-entity-recognition).
 
 Move to lines 50-68 in __main.dsl__.
 
@@ -116,12 +116,11 @@ preprocessor digression actionFiller
 }
 ```
 
-In the __’preprocessor digression actionFiller’__ part we program what action we want to be performed once a command ( on __'on #messageHasAnyIntent(digression.actionFiller.commands) priority 2000;'__
-    }) was triggered.
+In the __`preprocessor digression actionFiller`__ part we program what action we want to be performed once the command __`on #messageHasAnyIntent(digression.actionFiller.commands) priority 2000;`__ was triggered
 
-In this particular instance, we see that the commands are written out in line 56: __’"turn on"’__, __’"turn off", __’"open"’__, and __’"close"’__. #messageHasAnyIntent is what triggers the command. 
+In this particular instance, we see that the commands are written out in line 56: __`"turn on"`__, __`"turn off"`__, __`"open"`__, and __`"close"`__. #messageHasAnyIntent is what triggers the command. 
 
-Look at __data.json__ This is where you list your training data to be used to train the neural networks powering intent classification of the conversational app. You can read more about it [here](https://dasha.ai/en-us/blog/intent-classification).  It includes the commands we specified earlier which are followed by “includes”, which means that the phrases listed below are the triggers of that specific command. Notice that, for example, in the “turn off” part we have the word **light** in parentheses and **car function** in brackets. It doesn’t mean that the __'“turn off”'__ command will only be triggered once the driver wants the lights turned off; it includes all the car functions that you program the app to know. 
+Look at __data.json__ This is where you list your training data to be used to train the neural networks powering intent classification of the conversational app. You can read more about it [here](https://dasha.ai/en-us/blog/intent-classification).  It includes the commands we specified earlier which are followed by “includes”, which means that the phrases listed below are the triggers of that specific command. Notice that, for example, in the “turn off” part we have the word **light** in parentheses and **car function** in brackets. It doesn’t mean that the __`“turn off”`__ command will only be triggered once the driver wants the lights turned off; it includes all the car functions that you program the app to know. 
 
 ```json
 {
@@ -171,13 +170,13 @@ Look at __data.json__ This is where you list your training data to be used to tr
 
 For the purposes of this demo, we’ve listed four car functions that are listed in the “index.js” file. 
 
-The default car settings, in this case, are that the light (and the AC) are turned off. The “true” part indicates a command can be performed and the “false” part shows the contrary, hence __'light: { “turn on”: true, “turn off”: false }'__. The same logic applies to the trunk and the windows, which are close by default. 
+The default car settings, in this case, are that the light (and the AC) are turned off. The “true” part indicates a command can be performed and the “false” part shows the contrary, hence __`light: { “turn on”: true, “turn off”: false }`__. The same logic applies to the trunk and the windows, which are close by default. 
 
-Now that the conversational AI app has received a command, it remembers it and sets the current action to that command (__'set $currentAction = command;'__).
+Now that the conversational AI app has received a command, it remembers it and sets the current action to that command (__`set $currentAction = command;`__).
 
 Lines 70-119 describe that our in-car voice assistant will check for specific conditions and ask the driver if they want an action to be performed based on that condition. Let’s consider an example when it’s winter and it’s snowing outside. The car has a snow mode and is equipped with an anti-lock braking system and traction control. When the car voice assistant gets a signal that the car owner is driving in a snowy environment, it will say the following: “It's snowing outside. Would you like to turn the snow mode on?". Here the target is "snow mode" and the action is “turn on”. We’ve programmed the voice AI assistant to check for such conditions every 8000ms (8 seconds; note that the timing can be changed). 
 
-Now it’s up to the driver whether to let the in-car voice assistant turn on the snow mode. Should the driver say “yes”, the assistant recognizes it as a positive sentiment ("snow mode") and follows the command. It’s important not to forget that the driver might repeat after the voice assistant and say something like “turn the snow mode on” (__'#messageHasIntent($currentAction??"")'__) and have AI recognize the command. After turning the snow mode on, the driver will be alerted of the result (__'#sayText(result.details);"__). If the driver decides to have snow mode on, the assistant will note the sentiment was negative and say “as you wish” (__'#say("asYouWish");'__).
+Now it’s up to the driver whether to let the in-car voice assistant turn on the snow mode. Should the driver say “yes”, the assistant recognizes it as a positive sentiment ("snow mode") and follows the command. It’s important not to forget that the driver might repeat after the voice assistant and say something like “turn the snow mode on” (__`#messageHasIntent($currentAction??"")`__) and have AI recognize the command. After turning the snow mode on, the driver will be alerted of the result (__`#sayText(result.details);`__). If the driver decides to have snow mode on, the assistant will note the sentiment was negative and say “as you wish” (__`#say("asYouWish");`__).
 
 ```dsl
 digression yesOrNo
