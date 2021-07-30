@@ -1,14 +1,19 @@
-#Build a talking car with Dasha AI
+#Build a talking car app with Dasha AI
 
-Let’s take a look at  how you may create a simple in-car assistant conversational AI app using Dasha AI.
+To launch the app: 
 
-If this is your first introduction to the technology, please follow [this link](https://dasha.ai/en-us/blog/conversational-ai-app-creation-guide) which will guide you through the process of installing the programs you need to create a voice assistant for cars.
+1. Get your Dasha API key. You'll need to pop into the [Dasha Developer Community](https://community.dasha.ai). 
+2. Make sure you have latest Node.js, NPM and VS Code installed. In VS Code extension marketplace install Dasha Studio extension. 
+3. Clone the repo and open the project in Visual Studio Code. 
+4. In the terminal `dasha account login` to register your API key. `npm i` then `npm start chat` for text chat or `npm start 12223334455` where 12223334455 is your phone number in the international format. You will get a call on your phone.
 
-When you’re all set, clone the repo and open it in Visual Studio Code. Alternatively, you can clone the project directly from your terminal using  Let’s see what’s happening with the code and how you can make your own app based on it.
+You can follow the tutorial below to recreate this application. 
+
+Open the repo in VS Code. 
 
 Go to __main.dsl__
 
-Let’s take a look at the first few lines of the code. In this part, the context is declared and the variables that we will use in this context are written out.
+In the first few lines, the context variables and types are declared.
 
 ```dsl
 context
@@ -33,8 +38,8 @@ type CallResult =
     success: boolean; details: string;
 }
 ;
-
 ```
+
 Now that we’ve got that part out of the way, we can move on to lines 29-48.
 
 ```dsl
@@ -60,18 +65,19 @@ preprocessor digression targetFiller
 }
 ```
 
-In the __’preprocessor digression targetFiller’__ part we program a conversational AI app to understand what car part the driver chooses. 
+In the __’preprocessor digression targetFiller’__ part we program a conversational AI app to understand what car part the driver chooses. A __digression__ is a node which can be called up from any point in the conversation. This is how the AI responds to inevitable tangents that humans bring up in conversation. You can also use digressions to specify numerous responses to a phrase such as "how can I help you today?" A preprocessor is a digression which doesn't consume a message, it performs some function but goes unseen by the end user. You can read more about digressions in this [post](https://dasha.ai/en-us/blog/using-digressions).  You can read more about Dasha preprocessor digressions in our [documentation](https://docs.dasha.ai/en-us/default/dasha-script-language/program-structure?searchResult=p73-highlight-0#digression). 
 
 At this point the driver can specify either the wanted car part or what they want to be done with that part, which is shown in line 33:
 
 ```dsl
         on #messageHasData("car_function") or #messageHasData("car_part") priority 2000;
 ```
+
 Now that the AI got one piece of information we need to teach it to get the rest of it. If it classifies the received info as a target (car part), it remembers it and asks about what the driver would like to be done with that car part. For example, a driver says “the window”, AI would ask “What should I do with the window?”, and once it receives an “open” or “close” command, it will proceed accordingly. 
 
 Note that it’s not necessary for the driver to specify the action and the car part separately, they can say “open the window” and, since both fillers are known, the AI will immediately open the window. 
 
-Speaking of actions and car parts, you can check them out under intents and entities in the tab section under “data.json”. We’ll take a look at the actions below but for now, let’s focus on the car parts.
+Speaking of actions and car parts, you can check them out under intents and entities in the tab section under “data.json”. We’ll take a look at the actions below but for now, let’s focus on the car parts. 
 
 ```json
   "entities": {
@@ -82,11 +88,11 @@ Speaking of actions and car parts, you can check them out under intents and enti
         { "value": "window", "synonyms": ["windows"]}
       ]
     },
-
 ```
-Entities are the words or phrases that are extracted and categorized under a more generalized word (or phrase). Here we have __'“trunk”'__ and __'“window”'__, which are parts of the car. In order to make your in car voice assistant understand that the driver wants to open the trunk when receiving the __'“open boot”'__ command, it’s necessary to add synonyms when writing down the entities.
 
-Let’s move on to lines 50-68.
+In the context of Dasha, an entity is a word or a phrase the value of which is extracted and categorized from the user's words. Here we have __'“trunk”'__ and __'“window”'__, which are parts of the car. In order to make your in car voice assistant understand that the driver wants to open the trunk when receiving the __'“open boot”'__ command, it’s necessary to add synonyms when writing down the entities. You can learn more about named entities [here](https://dasha.ai/en-us/blog/named-entity-recognition).
+
+Move to lines 50-68 in __main.dsl__.
 
 ```dsl
 preprocessor digression actionFiller
@@ -108,13 +114,14 @@ preprocessor digression actionFiller
         return;
     }
 }
-
 ```
 
 In the __’preprocessor digression actionFiller’__ part we program what action we want to be performed once a command ( on __'on #messageHasAnyIntent(digression.actionFiller.commands) priority 2000;'__
     }) was triggered.
 
 In this particular instance, we see that the commands are written out in line 56: __’"turn on"’__, __’"turn off", __’"open"’__, and __’"close"’__. #messageHasAnyIntent is what triggers the command. 
+
+Look at __data.json__ This is where you list your training data to be used to train the neural networks powering intent classification of the conversational app. You can read more about it [here](https://dasha.ai/en-us/blog/intent-classification).  It includes the commands we specified earlier which are followed by “includes”, which means that the phrases listed below are the triggers of that specific command. Notice that, for example, in the “turn off” part we have the word **light** in parentheses and **car function** in brackets. It doesn’t mean that the __'“turn off”'__ command will only be triggered once the driver wants the lights turned off; it includes all the car functions that you program the app to know. 
 
 ```json
 {
@@ -162,9 +169,7 @@ In this particular instance, we see that the commands are written out in line 56
     }
 ```
 
-Let’s take a quick look at what is going on in the intents. It includes the commands we specified earlier which are followed by “includes”, which means that the phrases listed below are the triggers of that specific command. Notice that, for example, in the “turn off” part we have the word **light** in parentheses and **car function** in brackets. It doesn’t mean that the __'“turn off”'__ command will only be triggered once the driver wants the lights turned off; it includes all the car functions that you program the app to know. 
-
-For the purposes of this demo, we’ve listed four car functions that are listed in the “index.js” tab. 
+For the purposes of this demo, we’ve listed four car functions that are listed in the “index.js” file. 
 
 The default car settings, in this case, are that the light (and the AC) are turned off. The “true” part indicates a command can be performed and the “false” part shows the contrary, hence __'light: { “turn on”: true, “turn off”: false }'__. The same logic applies to the trunk and the windows, which are close by default. 
 
@@ -225,7 +230,6 @@ preprocessor digression commandUpdater
         return;
     }
 }
-
 ```
 
 After the snow mode was turned on, the assistant sets target and action back to default and goes on to check for new commands every 8 seconds.
@@ -280,10 +284,6 @@ digression command
 }
 ```
 
-And that’s it! Now you have an in-car voice assistant that is able to turn different car modes on and change the conditions inside the car.
+Make whatever changes you see fit and test along the way. 
 
-It’s time to run the demo and test it out!
-
-## Last but not least
-
-We’ve explored how easy it is to create an in-car voice assistant with Dasha AI. Your new conversational AI as a service app can have a mere 200 lines of code or even less, depending on what capabilities you want it to have. Why not try playing with the demo to see your best car voice assistant come to life?
+Don't forget to [let us know](https://community.dasha.ai) if you've got any feedback. 
