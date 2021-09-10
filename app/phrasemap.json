@@ -3,8 +3,7 @@
     "voiceInfo": {
       "lang": "en-US",
       "speaker": "default",
-      "speed": 1.2,
-      "variation": 40
+      "speed": 1
     },
     "phrases": {
       "i_will_call_back": [
