@@ -66,11 +66,6 @@ async function main() {
 
   app.ttsDispatcher = () => "dasha";
 
-  app.connectionProvider = async (conv) =>
-    conv.input.phone === "chat"
-      ? dasha.chat.connect(await dasha.chat.createConsoleChat())
-      : dasha.sip.connect(new dasha.sip.Endpoint("default"));
-
   app.setExternal("command", command);
   app.setExternal("checkCommandUpdate", checkCommandUpdate);
 
@@ -89,9 +84,19 @@ async function main() {
     await logFile.appendFile(JSON.stringify(event, undefined, 2) + "\n");
   });
 
-  if (conv.input.phone !== "chat") conv.on("transcription", console.log);
+  conv.audio.tts = "dasha";
 
-  const result = await conv.execute();
+  if (conv.input.phone === "chat") {
+    await dasha.chat.createConsoleChat(conv);
+  } else {
+    conv.on("transcription", console.log);
+  }
+
+
+  const result = await conv.execute({
+    channel: conv.input.phone === "chat" ? "text" : "audio",
+  });
+  
   console.log(result.output);
 
   await app.stop();
